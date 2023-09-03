@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 public class ChatEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long chatId;
+    private int chatId;
 
     @Email
     @Column(unique = true, nullable = false)

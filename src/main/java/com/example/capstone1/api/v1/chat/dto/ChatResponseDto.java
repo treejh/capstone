@@ -10,7 +10,7 @@ public class ChatResponseDto {
     @Setter
     @AllArgsConstructor
     public static class Response {
-        private long chatId;
+        private int chatId;
         private String email;
         private String name;
         private String pay;

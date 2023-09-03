@@ -10,7 +10,7 @@ public class ChatRequestDto {
     @Setter
     @AllArgsConstructor
     public static class Post {
-        private long chatId;
+        private int chatId;
         private String email;
         private String name;
     }
@@ -20,7 +20,7 @@ public class ChatRequestDto {
     @Setter
     @AllArgsConstructor
     public static class Patch {
-        private long chatId;
+        private int chatId;
         private String email;
         private String name;
         private String pay;

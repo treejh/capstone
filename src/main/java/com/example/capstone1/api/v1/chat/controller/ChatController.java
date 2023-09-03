@@ -39,7 +39,7 @@ public class ChatController {
 
     // Read
     @GetMapping
-    public ResponseEntity getChat(@Positive @RequestParam long chatId) {
+    public ResponseEntity getChat(@Positive @RequestParam int chatId) {
         ChatEntity chat = chatService.findChat(chatId);
         ChatResponseDto.Response response = chatMapper.ChatToChatDtoResponse(chat);
 
@@ -48,7 +48,7 @@ public class ChatController {
 
     // Update
     @PatchMapping("/{chat-id}")
-    public ResponseEntity patchChat(@Positive @PathVariable("chat-id") long chatId,
+    public ResponseEntity patchChat(@Positive @PathVariable("chat-id") int chatId,
                                       @RequestBody ChatRequestDto.Patch patch) {
         patch.setChatId(chatId);
         ChatEntity chat = chatService.patchChat(chatMapper.ChatDtoPatchToChat(patch));
@@ -71,7 +71,7 @@ public class ChatController {
  */
     // Delete
     @DeleteMapping("/{chat-id}")
-    public ResponseEntity deleteChat(@Positive @PathVariable("chat-id") long chatId) {
+    public ResponseEntity deleteChat(@Positive @PathVariable("chat-id") int chatId) {
         chatService.deleteChat(chatId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
