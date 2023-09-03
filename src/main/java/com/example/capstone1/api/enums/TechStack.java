@@ -1,0 +1,33 @@
+package com.example.capstone1.api.enums;
+
+public enum TechStack {
+    JAVA,
+    JavaScript,
+    Python,
+    HTML,
+    CSS,
+    React,
+    VUE,
+    Angular,
+    NodeJS,
+    SpringBoot,
+    Django,
+    RubyOnRails,
+    PHP,
+    Laravel,
+    ASPNET,
+    ExpressJS,
+    MySQL,
+    PostgreSQL,
+    MongoDB,
+    AWS,
+    Docker,
+    Kubernetes,
+    Git,
+    Jenkins,
+    Swift,
+    Kotlin,
+    CSharp,
+    Unity,
+    TensorFlow
+}
