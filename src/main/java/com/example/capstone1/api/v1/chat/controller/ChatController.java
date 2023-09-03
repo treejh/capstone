@@ -1,79 +1,26 @@
 package com.example.capstone1.api.v1.chat.controller;
 
+// import 생략...
 
+import com.example.capstone1.api.v1.chat.dto.ChatMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 
-import com.example.capstone1.api.v1.chat.dto.ChatRequestDto;
-import com.example.capstone1.api.v1.chat.dto.ChatResponseDto;
-import com.example.capstone1.api.v1.chat.entity.ChatEntity;
-import com.example.capstone1.api.v1.chat.mapper.ChatMapper;
-import com.example.capstone1.api.v1.chat.service.ChatService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+@RequiredArgsConstructor
+@Controller
+public class ChatController { //message controller
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+    private final SimpMessageSendingOperations messagingTemplate;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController
-@RequestMapping("/chat")
-@Validated
-@AllArgsConstructor
-public class ChatController {
-    private final ChatService chatService;
-    private final ChatMapper chatMapper;
-
-    // Create
-    @PostMapping
-    public ResponseEntity postChat(@Valid @RequestBody ChatRequestDto.Post post) {
-        ChatEntity chat = chatService.craeteChat(chatMapper.ChatDtoPostToChat(post));
-        ChatResponseDto.Response response = chatMapper.ChatToChatDtoResponse(chat);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    // Read
-    @GetMapping
-    public ResponseEntity getChat(@Positive @RequestParam int chatId) {
-        ChatEntity chat = chatService.findChat(chatId);
-        ChatResponseDto.Response response = chatMapper.ChatToChatDtoResponse(chat);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    // Update
-    @PatchMapping("/{chat-id}")
-    public ResponseEntity patchChat(@Positive @PathVariable("chat-id") int chatId,
-                                      @RequestBody ChatRequestDto.Patch patch) {
-        patch.setChatId(chatId);
-        ChatEntity chat = chatService.patchChat(chatMapper.ChatDtoPatchToChat(patch));
-        ChatResponseDto.Response response = chatMapper.ChatToChatDtoResponse(chat);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-/*
-    @PutMapping("/{chat-id}")
-    public ResponseEntity putChat(@Positive @PathVariable("chat-id") long chatId,
-                                    @Valid @RequestBody ChatDto.Put put) {
-        put.setChatId(chatId);
-        ChatEntity chat = chatService.putChat(chatMapper.chatDtoPutToChat(put));
-        ChatDto.Response response = chatMapper.chatToChatDtoResponse(chat);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-
- */
-    // Delete
-    @DeleteMapping("/{chat-id}")
-    public ResponseEntity deleteChat(@Positive @PathVariable("chat-id") int chatId) {
-        chatService.deleteChat(chatId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @MessageMapping("/chat/message")
+    public void message(ChatMessage message) {
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage = message;
+        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
+            chatMessage.setMessage(message.getSender() + "님이 입장하셨습니다.");
+        }
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessage);
     }
 }

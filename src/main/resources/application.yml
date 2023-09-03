@@ -12,9 +12,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/capstone?serverTimezone=Asia/Seoul
-    username: cs
-    password: 1234
+    url: jdbc:mariadb://localhost:3306/cap?serverTimezone=Asia/Seoul
+    username: jihyun
+    password: wlgus4182@@
 
   # jpa setting
   jpa:
